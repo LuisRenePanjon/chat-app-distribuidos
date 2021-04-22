@@ -19,9 +19,12 @@ const io = SocketIO( server )
 //Sockets
 io.on('connection', ( socket ) => {
     console.log( 'new connectionss', socket.id );
+    socket.broadcast.emit('chat:user', socket.id);
     socket.on('chat:myMessage', ( data ) => {
-        io.emit('chat:myMessage', data)
-        console.log(data + 'dasdas');
+        // userId = socket.id;
+        // data.userId = userId;
+        io.emit('chat:myMessage', data);
+        console.log(data);
     });
 
     socket.on('chat:typing', ( data ) => {

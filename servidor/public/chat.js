@@ -7,24 +7,36 @@ window.onload = function () {
     let messages = document.getElementById('message');
     let userName = document.getElementById('user');
     let output   = document.getElementById("chat-content");
+    let outputO  = document.getElementById("chat-content-origin");
+    let userId   = 'different'; 
     
+    socket.on( 'chat:user', (data) => {
+        userId = data;
+    });
+
     btn.addEventListener('click', function() {
             let mensaje = {
-                user : userName.value,
-                message : messages.value
+                user    : userName.value,
+                message : messages.value,
+                id      : userId, 
             };
             socket.emit('chat:myMessage', mensaje);
-            console.log(mensaje);
     });
     
     messages.addEventListener('keypress', () => {
         socket.emit('chat:typing', userName.value);
     });
-    socket.on('chat:myMessage', (data) => {
-        console.log('DEbe imprimir esto');
-        output.innerHTML += `<p><strong>${data.user}</strong></p><br/>
-        <p>${data.message}</p>`
-        console.log(data.userName,'Prin');
+    socket.on('chat:myMessage', ( data ) => {
+        console.log( 'idUser: ' ,data.id , 'id: ', userId);
+        if ( userId == data.id ) {
+            outputO.innerHTML += `<p><strong>${data.user}</strong></p><br/>
+            <p>${data.message}</p>
+            <p>origen<p/>`
+        } else if( userId != data.id){
+            output.innerHTML += `<p><strong>${data.user}</strong></p><br/>
+            <p>${data.message}</p>
+            <p>destino<p/>`
+        }
     });
     
     socket.on('chat:typing', ( data ) => {
