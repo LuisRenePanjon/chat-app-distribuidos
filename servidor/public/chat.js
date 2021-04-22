@@ -27,15 +27,10 @@ window.onload = function () {
         socket.emit('chat:typing', userName.value);
     });
     socket.on('chat:myMessage', ( data ) => {
-        console.log( 'idUser: ' ,data.id , 'id: ', userId);
         if ( userId == data.id ) {
-            outputO.innerHTML += `<p><strong>${data.user}</strong></p><br/>
-            <p>${data.message}</p>
-            <p>origen<p/>`
+            output.innerHTML += `<p class="p-origen"><strong>${data.user}</strong><br/>${data.message}</p>`
         } else if( userId != data.id){
-            output.innerHTML += `<p><strong>${data.user}</strong></p><br/>
-            <p>${data.message}</p>
-            <p>destino<p/>`
+            output.innerHTML += `<p class="p-destino"><strong>${data.user}</strong><br/>${data.message}</p>`
         }
     });
     
@@ -43,13 +38,3 @@ window.onload = function () {
         actions.innerHTML = `<p><em>${data} está escribiendo...</em></p>`
     });
 };
-// function tipear(){
-// }
-    
-    // messages.addEventListener('keypress',function (){
-    //     socket.emit('chat:typing', userName.value);
-    // });
-    
-
-
-// console.log('print this?', messages);
